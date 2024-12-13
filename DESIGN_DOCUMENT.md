@@ -135,7 +135,7 @@ clickThroughRate // the rate that customers who see the add click on it (between
 targetingPredicates // the targeting rules for this group 
 ```
 
-##CreateContent
+### CreateContent
 
 Creates a new piece of advertising content and a targeting group to go with it. The html/css content of the advertisement 
 and a marketplace to schedule the content in is required. If a list of targeting predicates is provided, the initial 
@@ -185,8 +185,8 @@ targetingGroups // targetingGroups for content
 
 Adds a new targeting group to an existing piece of advertising content based on the `contentId` specified. If a list of 
 targeting predicates is provided, the initial targeting group will be created with those rules. Otherwise, the targeting 
-group will be created without any predicates, meaning it is viewable by any customer. Targeting groups are giving a 
-click through rate of 1 to start, so that they are guaranteed some initial impressions and a true click through rate can 
+group will be created without any predicates, meaning it is viewable by any customer. Targeting groups are given a 
+click-through rate of 1 to start, so that they are guaranteed some initial impressions and a true click through rate can 
 be learned.
 
 * POST targetingGroups
@@ -210,7 +210,7 @@ When provided the customerId and the marketplaceId for the ad to be served, this
 be clicked on. If the customer is unrecognized (i.e. not authenticated), a null customerId is a valid input. The 
 response will contain the Advertisement, which has an id and renderable content (html/css). If the service is unable 
 to generate an ad, the content will be an empty string. The id of the advertisement is unique to the impression. It can 
-be used to report on whether or not this impression led to a customer action, like a click. 
+be used to report on whether this impression led to a customer action, like a click. 
 
 * GET advertisement/<marketplaceId>?customerId=<customerId>
 
@@ -271,7 +271,7 @@ contentId // id of content to delete
 ## Data Model
 
 Our service relies on DynamoDB to store our advertising content and targeting data. Each piece of content 
-maps to multiple targeting groups. A targeting group is a collection of targeting rules (predicates) and a click through 
+maps to multiple targeting groups. A targeting group is a collection of targeting rules (predicates) and a click-through 
 rate. 
 
 You can look through the `ContentDAO` to find the DynamoDB tables that the ad service uses.
@@ -281,7 +281,7 @@ The classes it uses will be annotated, and you can find the tables and items in 
 
 ### Sequence Diagrams
 
-** Generate Advertisement starting state **
+**Generate Advertisement starting state**
 
 This is what `GenerateAdvertisment` looks like at the start of this project.
 
@@ -292,7 +292,7 @@ calls AdvertisementSelectionLogic's selectAdvertisement to retrieve an ad. Adver
 to retrieve ad content and then randomly choosing an ad returned by ContentDAO to return to GenerateAdActivity.*
 
 
-** Generate Advertisement end state **
+**Generate Advertisement end state**
 
 This is what `GenerateAdvertisement` should look like at the end of this project. 
 
@@ -302,10 +302,10 @@ This is what `GenerateAdvertisement` should look like at the end of this project
 AdvertisementSelectionLogic's selectAdvertisement. AdvertisementSelectionLogic calls ContentDAO and TargetingGroupDao to 
 get content and targeting data respectively. It sorts the targeting groups by click through rate. It also calls 
 TargetingEvaluator to evaluate whether the given request meets all of the rules in the targetingGroups. Then it returns
-an eligible ad with the highest click through rate.*
+an eligible ad with the highest click-through rate.*
 
 
-### Class diagrams
+### Class Diagrams
 
 ![Figure 5 - TargetEvaluator related class diagrams](src/resources/class-diagram-targeting-evaluator.png)
 

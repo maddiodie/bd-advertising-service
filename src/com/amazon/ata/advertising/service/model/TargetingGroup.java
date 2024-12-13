@@ -8,7 +8,8 @@ public class TargetingGroup {
     private double clickThroughRate;
     private List<TargetingPredicate> targetingPredicates;
 
-    public TargetingGroup(String targetingGroupId, String contentId, double clickThroughRate, List<TargetingPredicate> targetingPredicates) {
+    public TargetingGroup(String targetingGroupId, String contentId, double clickThroughRate,
+                          List<TargetingPredicate> targetingPredicates) {
         this.targetingGroupId = targetingGroupId;
         this.contentId = contentId;
         this.clickThroughRate = clickThroughRate;
@@ -54,17 +55,18 @@ public class TargetingGroup {
         this.clickThroughRate = builder.clickThroughRate;
     }
 
-    public static Builder builder() {return new Builder();}
+    public static Builder builder() {
+        return new Builder();
+    }
 
     public static final class Builder {
+
         private String targetingGroupId;
         private String contentId;
         private double clickThroughRate;
         private List<TargetingPredicate> targetingPredicates;
 
-        private Builder() {
-
-        }
+        private Builder() {}
 
         public Builder withTargetingGroupId(String targetingGroupIdToUse) {
             this.targetingGroupId = targetingGroupIdToUse;
@@ -86,6 +88,10 @@ public class TargetingGroup {
             return this;
         }
 
-        public TargetingGroup build() { return new TargetingGroup(this); }
+        public TargetingGroup build() {
+            return new TargetingGroup(this);
+        }
+
     }
+
 }
