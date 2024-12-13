@@ -12,12 +12,14 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @Tag("MT01-Loop")
 public class MT1IntrospectionTests {
+
     private static final String IMPLEMENTED_STREAMS_FIELD_NAME = "IMPLEMENTED_STREAMS";
 
     @Test
     public void addTargetingGroupActivity_convertedLoopToStream_setImplementedStreamsFlag()
         throws IllegalAccessException {
-        Class<?> addTargetingGroupActivity = ClassQuery.inExactPackage("com.amazon.ata.advertising.service.activity")
+        Class<?> addTargetingGroupActivity = ClassQuery.inExactPackage(
+                "com.amazon.ata.advertising.service.activity")
             .withExactSimpleName("AddTargetingGroupActivity")
             .findClassOrFail();
 
@@ -41,7 +43,8 @@ public class MT1IntrospectionTests {
     @Test
     public void targetingEvaluator_convertedLoopToStream_setImplementedStreamsFlag()
         throws IllegalAccessException {
-        Class<?> targetingEvaluator = ClassQuery.inExactPackage("com.amazon.ata.advertising.service.targeting")
+        Class<?> targetingEvaluator = ClassQuery.inExactPackage(
+                "com.amazon.ata.advertising.service.targeting")
             .withExactSimpleName("TargetingEvaluator")
             .findClassOrFail();
 
@@ -61,4 +64,5 @@ public class MT1IntrospectionTests {
                 IMPLEMENTED_STREAMS_FIELD_NAME,
                 targetingEvaluator));
     }
+
 }
