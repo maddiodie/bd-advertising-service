@@ -12,7 +12,7 @@ import java.util.List;
 public class TargetingEvaluator {
 
     public static final boolean IMPLEMENTED_STREAMS = true;
-    public static final boolean IMPLEMENTED_CONCURRENCY = true;
+    public static final boolean IMPLEMENTED_CONCURRENCY = false;
     private final RequestContext requestContext;
 
     /**
