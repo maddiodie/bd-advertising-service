@@ -1,6 +1,7 @@
 package com.amazon.ata.advertising.service.model;
 
 public class Advertisement {
+
     private String id;
     private String content;
 
@@ -52,4 +53,5 @@ public class Advertisement {
 
         public Advertisement build() { return new Advertisement(this); }
     }
+
 }

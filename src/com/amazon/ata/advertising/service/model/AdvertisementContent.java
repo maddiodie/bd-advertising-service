@@ -12,6 +12,7 @@ import java.util.Objects;
  */
 @DynamoDBTable(tableName = "Content")
 public class AdvertisementContent {
+
     public static final String MARKETPLACE_ID_INDEX = "MarketplaceIdIndex";
 
     private String contentId;
@@ -137,4 +138,5 @@ public class AdvertisementContent {
             return this;
         }
     }
+
 }

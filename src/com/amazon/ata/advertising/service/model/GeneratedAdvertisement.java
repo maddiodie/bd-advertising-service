@@ -5,8 +5,8 @@ import org.apache.commons.lang3.Validate;
 import java.util.UUID;
 
 /**
- * The unique advertisement generated for a customer, containing an ID unique to this ad's impression and advertisement
- * content.
+ * The unique advertisement generated for a customer, containing an ID unique to this ad's impression
+ * and advertisement content.
  */
 public class GeneratedAdvertisement {
 

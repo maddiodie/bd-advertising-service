@@ -1,6 +1,5 @@
 package com.tct.mastery.task1;
 
-import com.amazon.ata.advertising.service.activity.GenerateAdActivity;
 import com.amazon.ata.advertising.service.activity.dagger.GenerateAdActivityDagger;
 import com.amazon.ata.advertising.service.model.requests.GenerateAdvertisementRequest;
 import com.amazon.ata.advertising.service.model.responses.GenerateAdvertisementResponse;

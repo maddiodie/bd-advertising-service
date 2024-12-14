@@ -1,5 +1,6 @@
 package com.amazon.ata.advertising.service.businesslogic;
 
+import com.amazon.ata.advertising.service.comparators.TargetingGroupComparator;
 import com.amazon.ata.advertising.service.dao.ReadableDao;
 import com.amazon.ata.advertising.service.model.AdvertisementContent;
 import com.amazon.ata.advertising.service.model.EmptyGeneratedAdvertisement;
@@ -8,6 +9,7 @@ import com.amazon.ata.advertising.service.model.RequestContext;
 import com.amazon.ata.advertising.service.targeting.TargetingEvaluator;
 import com.amazon.ata.advertising.service.targeting.TargetingGroup;
 
+import com.amazon.ata.advertising.service.targeting.predicate.TargetingPredicateResult;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
@@ -101,20 +103,48 @@ public class AdvertisementSelectionLogic {
         requestContext = new RequestContext(customerId, marketplaceId);
         targetingEvaluator = new TargetingEvaluator(requestContext);
 
-        List<AdvertisementContent> eligibleAds =  contentDao.get(marketplaceId).stream()
-                .flatMap(advertisementContent -> targetingGroupDao.get(advertisementContent
-                                .getContentId()).stream()
-                .sorted()
-                .filter(targetingGroup -> targetingEvaluator.evaluate(targetingGroup).isTrue())
-                .map(targetingGroup -> advertisementContent))
+        List<AdvertisementContent> contents = contentDao.get(marketplaceId);
+        if (CollectionUtils.isEmpty(contents)) {
+            return emptyGeneratedAdvertisement;
+        }
+        // fetch all advertisement contents for the marketplace
+
+//        List<AdvertisementContent> eligibleAds = contents.stream()
+//            .flatMap(advertisementContent ->
+//                    targetingGroupDao.get(advertisementContent.getContentId()).stream()
+//                            .sorted(new TargetingGroupComparator())
+//                            .filter(targetingGroup ->
+//                                    targetingEvaluator.evaluate(targetingGroup).isTrue())
+//                            .map(targetingGroup -> advertisementContent))
+//            .collect(Collectors.toList());
+//        // stream to filter the eligible ads
+        // VERSION 1
+
+        List<AdvertisementContent> eligibleAds = contents.stream()
+                .flatMap(advertisementContent ->
+                        targetingGroupDao.get(advertisementContent.getContentId()).stream()
+                                .sorted(new TargetingGroupComparator())
+                                .filter(targetingGroup -> {
+                                    boolean allPredicatesTrue =
+                                            targetingGroup.getTargetingPredicates().stream()
+                                                    .allMatch(predicate -> {
+                                                        TargetingPredicateResult result =
+                                                                predicate.evaluate(requestContext);
+                                                        return result.isTrue();
+                                                    });
+                                    return allPredicatesTrue && targetingEvaluator
+                                            .evaluate(targetingGroup).isTrue();
+                                })
+                                .map(targetingGroup -> advertisementContent))
                 .collect(Collectors.toList());
+        // stream to filter the eligible ads
+        // VERSION 2
 
         if (eligibleAds.isEmpty()) {
             return emptyGeneratedAdvertisement;
         }
 
         return new GeneratedAdvertisement(eligibleAds.get(random.nextInt(eligibleAds.size())));
-
     }
 
 }

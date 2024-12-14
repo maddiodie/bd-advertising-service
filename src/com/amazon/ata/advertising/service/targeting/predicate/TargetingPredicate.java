@@ -6,10 +6,10 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
 /**
- * Base class for all TargetingPredicates. The evaluate method will call either a recognized or unrecognized evaluate
- * method based on whether not the customerId is available in the context. All classes extending TargetingPredicate must
- * implement the recognized evaluation method. Default implementation of the unrecognized evaluate is to return an
- * INDETERMINATE result.
+ * Base class for all TargetingPredicates. The evaluate method will call either a recognized or
+ * unrecognized evaluate method based on whether not the customerId is available in the context.
+ * All classes extending TargetingPredicate must implement the recognized evaluation method.
+ * Default implementation of the unrecognized evaluate is to return an INDETERMINATE result.
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY, property = "@class")
@@ -41,7 +41,7 @@ public abstract class TargetingPredicate {
     }
 
     /**
-     * Evaluate this targeting predicate ignoring whether or not it is set to inverse.
+     * Evaluate this targeting predicate ignoring whether it is set to inverse.
      * @param context The context of this request.
      * @return The result of evaluating the predicate.
      */
@@ -73,4 +73,5 @@ public abstract class TargetingPredicate {
     public boolean isInverse() {
         return inverse;
     }
+
 }

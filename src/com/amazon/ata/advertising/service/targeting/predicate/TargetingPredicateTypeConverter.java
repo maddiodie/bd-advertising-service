@@ -1,5 +1,6 @@
 package com.amazon.ata.advertising.service.targeting.predicate;
 
+import com.amazon.ata.advertising.service.dependency.DaggerLambdaComponent;
 import com.amazon.ata.advertising.service.exceptions.AdvertisementServiceException;
 import com.amazon.ata.advertising.service.dependency.LambdaComponent;
 import com.amazon.ata.advertising.service.dependency.TargetingPredicateInjector;
@@ -15,14 +16,18 @@ import java.util.stream.Collectors;
 /**
  * Class to convert a list of the complex type TargetingPredicate to a string and vice-versa.
  */
-public class TargetingPredicateTypeConverter implements DynamoDBTypeConverter<String, List<TargetingPredicate>> {
+public class TargetingPredicateTypeConverter implements DynamoDBTypeConverter<String,
+        List<TargetingPredicate>> {
+
     private static final ObjectMapper MAPPER = new ObjectMapper();
+    private static final LambdaComponent COMPONENT = DaggerLambdaComponent.create();
+    private static final TargetingPredicateInjector INJECTOR = COMPONENT.getTargetingPredicateInjector();
 
     /**
-     * Serializes the passed predicate list into a String. Each member is serialized separately so that the Jackson
-     * annotation (@JsonTypeInfo) can live at the abstract TargetingPredicate class, rather than annotating each
-     * subclass.
-     * information
+     * Serializes the passed predicate list into a String. Each member is serialized separately so
+     * that the Jackson annotation (@JsonTypeInfo) can live at the abstract TargetingPredicate class,
+     * rather than annotating each subclass.
+     *
      * @param predicateList - a list of TargetingPredicates that will be converted to a String value
      * @return The serialized string. "[]" in the case of an empty list.
      */
@@ -31,7 +36,8 @@ public class TargetingPredicateTypeConverter implements DynamoDBTypeConverter<St
         return new StringBuffer()
                 .append("[")
                 .append(predicateList.stream()
-                        .map(this::getSerializePredicateFunction).collect(Collectors.joining(",")))
+                        .map(this::getSerializePredicateFunction)
+                        .collect(Collectors.joining(",")))
                 .append("]").toString();
     }
 
@@ -46,18 +52,18 @@ public class TargetingPredicateTypeConverter implements DynamoDBTypeConverter<St
 
     @Override
     public List<TargetingPredicate> unconvert(String value) {
-        LambdaComponent component = null; //TODO: DaggerLambdaComponent.create();
-        TargetingPredicateInjector injector = component.getTargetingPredicateInjector();
         try {
             final List<TargetingPredicate> predicates = MAPPER.readValue(value,
                     new TypeReference<List<TargetingPredicate>>() { });
             for (TargetingPredicate predicate : predicates) {
-                injector.inject(predicate);
+                INJECTOR.inject(predicate);
             }
             return predicates;
         } catch (IOException e) {
-            throw new AdvertisementServiceException("Unable to convert the String value to a list of targeting " +
-                    "predicates. String: " + value, e);
+            throw new AdvertisementServiceException(
+                    "Unable to convert the String value to a list of targeting predicates. String: "
+                            + value, e);
         }
     }
+
 }
