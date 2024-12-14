@@ -1,5 +1,6 @@
 package com.tct.mastery.task1;
 
+import com.amazon.ata.advertising.service.activity.GenerateAdActivity;
 import com.amazon.ata.advertising.service.activity.dagger.GenerateAdActivityDagger;
 import com.amazon.ata.advertising.service.model.requests.GenerateAdvertisementRequest;
 import com.amazon.ata.advertising.service.model.responses.GenerateAdvertisementResponse;
@@ -17,14 +18,17 @@ public class MasteryTaskOneLogicTests {
             .withCustomerId(PARENT_PROFILE_CUSTOMER_ID)
             .withMarketplaceId(US_MARKETPLACE_ID)
             .build();
-        GenerateAdvertisementResponse result = new GenerateAdActivityDagger().handleRequest(request, null);
 
-        assertNotNull(result.getAdvertisement(), "Expected a non null advertisement in the response.");
-        assertNotNull(result.getAdvertisement().getId(), "Expected the advertisement to have a non-null " +
-            "content ID.");
-        assertFalse(StringUtils.isBlank(result.getAdvertisement().getContent()), "Expected a non-empty " +
-            "advertisement content when generating an advertisement for a customer ID with a parent profile " +
-            "in marketplace ID: " + request.getMarketplaceId());
+        GenerateAdvertisementResponse result = new GenerateAdActivityDagger().handleRequest(request,
+                null);
+
+        assertNotNull(result.getAdvertisement(), "Expected a non null advertisement in the " +
+                "response.");
+        assertNotNull(result.getAdvertisement().getId(), "Expected the advertisement to have " +
+                "a non-null content ID.");
+        assertFalse(StringUtils.isBlank(result.getAdvertisement().getContent()), "Expected a " +
+                "non-empty advertisement content when generating an advertisement for a customer ID " +
+                "with a parent profile in marketplace ID: " + request.getMarketplaceId());
     }
 
     @Test
@@ -33,14 +37,16 @@ public class MasteryTaskOneLogicTests {
             .withCustomerId(EMPTY_PROFILE_CUSTOMER_ID)
             .withMarketplaceId(CA_MARKETPLACE_ID)
             .build();
-        GenerateAdvertisementResponse result = new GenerateAdActivityDagger().handleRequest(request, null);
+        GenerateAdvertisementResponse result = new GenerateAdActivityDagger().handleRequest(request,
+                null);
 
-        assertNotNull(result.getAdvertisement(), "Expected a non null advertisement in the response.");
-        assertNotNull(result.getAdvertisement().getId(), "Expected the advertisement to have a non-null " +
-            "content ID.");
-        assertTrue(StringUtils.isBlank(result.getAdvertisement().getContent()), "Expected an empty " +
-            "advertisement content when generating an advertisement for a customer ID with an unknown profile " +
-            "in marketplace ID: " + request.getMarketplaceId());
+        assertNotNull(result.getAdvertisement(), "Expected a non null advertisement in the " +
+                "response.");
+        assertNotNull(result.getAdvertisement().getId(), "Expected the advertisement to have a " +
+                "non-null content ID.");
+        assertTrue(StringUtils.isBlank(result.getAdvertisement().getContent()), "Expected an " +
+                "empty advertisement content when generating an advertisement for a customer ID with an " +
+                "unknown profile in marketplace ID: " + request.getMarketplaceId());
     }
 
     @Test
@@ -49,13 +55,16 @@ public class MasteryTaskOneLogicTests {
             .withCustomerId(EMPTY_PROFILE_CUSTOMER_ID)
             .withMarketplaceId("TCT_TESTS_MARKETPLACE_ID")
             .build();
-        GenerateAdvertisementResponse result = new GenerateAdActivityDagger().handleRequest(request, null);
+        GenerateAdvertisementResponse result = new GenerateAdActivityDagger().handleRequest(request,
+                null);
 
-        assertNotNull(result.getAdvertisement(), "Expected a non null advertisement in the response.");
-        assertNotNull(result.getAdvertisement().getId(), "Expected the advertisement to have a non-null " +
-            "content ID.");
-        assertTrue(StringUtils.isBlank(result.getAdvertisement().getContent()), "Expected an empty " +
-            "advertisement content when generating an advertisement for a customer ID with an unknown profile " +
-            "in a non-existant marketplace ID: " + request.getMarketplaceId());
+        assertNotNull(result.getAdvertisement(), "Expected a non null advertisement in the " +
+                "response.");
+        assertNotNull(result.getAdvertisement().getId(), "Expected the advertisement to have a " +
+                "non-null content ID.");
+        assertTrue(StringUtils.isBlank(result.getAdvertisement().getContent()), "Expected an " +
+                "empty advertisement content when generating an advertisement for a customer ID with " +
+                "an unknown profile in a non-existent marketplace ID: " + request.getMarketplaceId());
     }
+
 }

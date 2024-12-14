@@ -19,7 +19,8 @@ public class AdvertisementContent {
     private String marketplaceId;
 
     /**
-     * An Advertisement's content contains an id that is unique to the template used to generate its renderable content.
+     * An Advertisement's content contains an id that is unique to the template used to generate its
+     * renderable content.
      * @param contentId The unique identifier for this piece of content.
      * @param renderableContent Html and css to be displayed on the retail website.
      * @param marketplaceId Which marketplace this advertisement should display in

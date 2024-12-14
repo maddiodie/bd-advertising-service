@@ -15,6 +15,7 @@ import javax.inject.Inject;
  * Gets ATA Content based on Marketplace.
  */
 public class ContentDao implements ReadableDao<String, List<AdvertisementContent>> {
+
     private final DynamoDBMapper mapper;
 
     /**
@@ -102,4 +103,5 @@ public class ContentDao implements ReadableDao<String, List<AdvertisementContent
         mapper.delete(deletedContent);
         return deletedContent;
     }
+
 }

@@ -14,6 +14,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @Tag("MT02")
 public class MT2IntrospectionTests {
+
     private static final Logger LOG = LogManager.getLogger(MT2IntrospectionTests.class);
     private static final String IMPLEMENTED_CONCURRENCY_FIELD_NAME = "IMPLEMENTED_CONCURRENCY";
 

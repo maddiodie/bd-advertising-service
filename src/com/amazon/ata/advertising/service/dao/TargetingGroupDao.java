@@ -16,6 +16,7 @@ import javax.inject.Inject;
  * Gets the TargetingGroups for a piece of ATA ad content.
  */
 public class TargetingGroupDao implements ReadableDao<String, List<TargetingGroup>> {
+
     private final TargetingPredicateInjector targetingPredicateInjector;
     private final DynamoDBMapper mapper;
 
@@ -25,16 +26,18 @@ public class TargetingGroupDao implements ReadableDao<String, List<TargetingGrou
      * @param mapper connection to DynamoDB
      */
     @Inject
-    public TargetingGroupDao(TargetingPredicateInjector targetingPredicateInjector, DynamoDBMapper mapper) {
+    public TargetingGroupDao(TargetingPredicateInjector targetingPredicateInjector,
+                             DynamoDBMapper mapper) {
         this.targetingPredicateInjector = targetingPredicateInjector;
         this.mapper = mapper;
     }
 
     /**
-     * Retrieves a metadata object for a piece of ATA ad content. The return is wrapped in an optional, which will be
-     * empty if no metatdata could be retrieved.
+     * Retrieves a metadata object for a piece of ATA ad content. The return is wrapped in an optional,
+     * which will be empty if no metadata could be retrieved.
      * @param contentId The id of the content to get metadata for
-     * @return the Advertisement metadata for the piece of content. If there is no metadata the Optional will be empty.
+     * @return the Advertisement metadata for the piece of content. If there is no metadata the
+     *         Optional will be empty.
      */
     @Override
     public List<TargetingGroup> get(String contentId) {

@@ -17,6 +17,7 @@ import java.util.List;
  */
 @DynamoDBTable(tableName = "TargetingGroups")
 public class TargetingGroup {
+
     public static final String CONTENT_ID_INDEX = "ContentIdIndex";
 
     @DynamoDBHashKey(attributeName = "TargetingGroupId")
@@ -37,7 +38,8 @@ public class TargetingGroup {
      * @param targetingGroupId The ID specifically for this targeting group
      * @param contentId The ID of the content this metadata is tied to.
      * @param clickThroughRate The probability a customer will click on this advertisement.
-     * @param targetingPredicates All of the targeting predicates that must be TRUE to show this advertisement.
+     * @param targetingPredicates All the targeting predicates that must be TRUE to show this
+     *                            advertisement.
      */
     public TargetingGroup(String targetingGroupId,
                           String contentId,
@@ -86,4 +88,5 @@ public class TargetingGroup {
     public void setTargetingPredicates(List<TargetingPredicate> targetingPredicates) {
         this.targetingPredicates = targetingPredicates;
     }
+
 }
