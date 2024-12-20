@@ -2,10 +2,7 @@ package com.amazon.ata.advertising.service.businesslogic;
 
 import com.amazon.ata.advertising.service.comparators.TargetingGroupComparator;
 import com.amazon.ata.advertising.service.dao.ReadableDao;
-import com.amazon.ata.advertising.service.model.AdvertisementContent;
-import com.amazon.ata.advertising.service.model.EmptyGeneratedAdvertisement;
-import com.amazon.ata.advertising.service.model.GeneratedAdvertisement;
-import com.amazon.ata.advertising.service.model.RequestContext;
+import com.amazon.ata.advertising.service.model.*;
 import com.amazon.ata.advertising.service.targeting.TargetingEvaluator;
 import com.amazon.ata.advertising.service.targeting.TargetingGroup;
 
@@ -120,31 +117,48 @@ public class AdvertisementSelectionLogic {
 //        // stream to filter the eligible ads
         // VERSION 1
 
-        List<AdvertisementContent> eligibleAds = contents.stream()
-                .flatMap(advertisementContent ->
-                        targetingGroupDao.get(advertisementContent.getContentId()).stream()
-                                .sorted(new TargetingGroupComparator())
-                                .filter(targetingGroup -> {
-                                    boolean allPredicatesTrue =
-                                            targetingGroup.getTargetingPredicates().stream()
-                                                    .allMatch(predicate -> {
-                                                        TargetingPredicateResult result =
-                                                                predicate.evaluate(requestContext);
-                                                        return result.isTrue();
-                                                    });
-                                    return allPredicatesTrue && targetingEvaluator
-                                            .evaluate(targetingGroup).isTrue();
-                                })
-                                .map(targetingGroup -> advertisementContent))
-                .collect(Collectors.toList());
+//        List<AdvertisementContent> eligibleAds = contents.stream()
+//                .flatMap(advertisementContent ->
+//                        targetingGroupDao.get(advertisementContent.getContentId()).stream()
+//                                .sorted(new TargetingGroupComparator())
+//                                .filter(targetingGroup -> {
+//                                    boolean allPredicatesTrue =
+//                                            targetingGroup.getTargetingPredicates().stream()
+//                                                    .allMatch(predicate -> {
+//                                                        TargetingPredicateResult result =
+//                                                                predicate.evaluate(requestContext);
+//                                                        return result.isTrue();
+//                                                    });
+//                                    return allPredicatesTrue && targetingEvaluator
+//                                            .evaluate(targetingGroup).isTrue();
+//                                })
+//                                .map(targetingGroup -> advertisementContent))
+//                .collect(Collectors.toList());
         // stream to filter the eligible ads
-        // VERSION 2
+        // VERSION 2 (mt2)
 
-        if (eligibleAds.isEmpty()) {
+        TreeMap<Double, AdvertisementContent> sortedAds = new TreeMap<>(Comparator.reverseOrder());
+
+        for (AdvertisementContent ad : contents) {
+            double highestCTR = 0.0;
+            for (TargetingGroup tg : targetingGroupDao.get(ad.getContentId())) {
+                if (targetingEvaluator.evaluate(tg).isTrue()) {
+                    double ctr = tg.getClickThroughRate();
+                    if (ctr > highestCTR) {
+                        highestCTR = ctr;
+                    }
+                }
+            }
+            if (highestCTR > 0.0) {
+                sortedAds.put(highestCTR, ad);
+            }
+        }
+
+        if (sortedAds.isEmpty()) {
             return emptyGeneratedAdvertisement;
         }
 
-        return new GeneratedAdvertisement(eligibleAds.get(random.nextInt(eligibleAds.size())));
+        return new GeneratedAdvertisement(sortedAds.firstEntry().getValue());
     }
 
 }

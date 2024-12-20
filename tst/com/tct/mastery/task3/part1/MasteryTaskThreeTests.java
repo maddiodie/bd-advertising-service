@@ -16,6 +16,7 @@ import java.util.UUID;
 import java.util.stream.DoubleStream;
 
 public class MasteryTaskThreeTests {
+
     private MasteryTaskThreeHelper helper;
     private List<String> contentToCleanup;
 
@@ -45,7 +46,8 @@ public class MasteryTaskThreeTests {
                 .forEach(contentToCleanup::add);
         AdvertisingContent expectedContent = helper.createContent(marketplaceId, 1.0);
         contentToCleanup.add(expectedContent.getId());
-        GenerateAdvertisementRequest request = MasteryTaskThreeHelper.createGenAdRequest(marketplaceId, customerId);
+        GenerateAdvertisementRequest request =
+                MasteryTaskThreeHelper.createGenAdRequest(marketplaceId, customerId);
 
         // WHEN
         List<GenerateAdvertisementResponse> results = new ArrayList<>();
@@ -55,6 +57,8 @@ public class MasteryTaskThreeTests {
 
         // THEN
         results.forEach(result ->
-            MasteryTaskThreeHelper.assertContent(expectedContent.getContent(), result, Arrays.asList(0.0, 0.3, 0.6, 1.0)));
+            MasteryTaskThreeHelper.assertContent(expectedContent.getContent(), result,
+                    Arrays.asList(0.0, 0.3, 0.6, 1.0)));
     }
+
 }

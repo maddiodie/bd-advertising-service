@@ -17,6 +17,7 @@ import java.util.stream.DoubleStream;
 
 
 public class MasteryTaskThreeTests {
+
     private MasteryTaskThreeHelper helper;
     private List<String> contentToCleanup;
 
@@ -35,7 +36,8 @@ public class MasteryTaskThreeTests {
     }
 
     @Test
-    public void generateAdvertisementNoCustomerId_multipleContentEachSingleTargetingGroups_alwaysReturnsHighestCTR() {
+    public void
+    generateAdvertisementNoCustomerId_multipleContentEachSingleTargetingGroups_alwaysReturnsHighestCTR() {
         // GIVEN
         String marketplaceId = UUID.randomUUID().toString();
         AdvertisingContent expectedContent = helper.createContent(marketplaceId, 0.95);
@@ -55,6 +57,8 @@ public class MasteryTaskThreeTests {
 
         // THEN
         results.forEach(result ->
-            MasteryTaskThreeHelper.assertContent(expectedContent.getContent(), result, Arrays.asList(0.0, 0.3, 0.6, 0.95)));
+            MasteryTaskThreeHelper.assertContent(expectedContent.getContent(), result,
+                    Arrays.asList(0.0, 0.3, 0.6, 0.95)));
     }
+
 }

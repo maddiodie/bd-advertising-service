@@ -19,6 +19,7 @@ import java.util.UUID;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class MasteryTaskThreeHelper {
+
     public MasteryTaskThreeHelper() {
     }
 
@@ -37,7 +38,8 @@ public class MasteryTaskThreeHelper {
                                      List<Double> eligibleCTRs) {
         Advertisement advertisement = result.getAdvertisement();
         String actualContent = advertisement.getContent();
-        assertEquals(expectedContent, actualContent, String.format("Did not select the advertisement with the highest CTR. " +
+        assertEquals(expectedContent, actualContent,
+                String.format("Did not select the advertisement with the highest CTR. " +
                 "The CTRs of eligible ads available were: %s", eligibleCTRs));
     }
 
@@ -47,7 +49,8 @@ public class MasteryTaskThreeHelper {
                 .withMarketplaceId(marketplaceId)
                 .withContent(content)
                 .build();
-        CreateContentResponse result = new CreateContentActivityDagger().handleRequest(request, null);
+        CreateContentResponse result = new CreateContentActivityDagger().handleRequest(request,
+                null);
 
         updateCTR(result.getTargetingGroup(), clickThroughRate);
 
@@ -55,11 +58,13 @@ public class MasteryTaskThreeHelper {
     }
 
     public void updateCTR(TargetingGroup targetingGroup, double clickThroughRate) {
-        UpdateClickThroughRateRequest updateClickThroughRateRequest = new UpdateClickThroughRateRequest().builder()
+        UpdateClickThroughRateRequest updateClickThroughRateRequest =
+                new UpdateClickThroughRateRequest().builder()
                 .withTargetingGroupId(targetingGroup.getTargetingGroupId())
                 .withClickThroughRate(clickThroughRate)
                 .build();
-        new UpdateClickThroughRateActivityDagger().handleRequest(updateClickThroughRateRequest, null);
+        new UpdateClickThroughRateActivityDagger().handleRequest(updateClickThroughRateRequest,
+                null);
     }
 
     public void deleteContent(String contentId) {
@@ -68,4 +73,5 @@ public class MasteryTaskThreeHelper {
                 .build();
         new DeleteContentActivityDagger().handleRequest(request, null);
     }
+
 }
